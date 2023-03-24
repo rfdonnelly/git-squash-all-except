@@ -1,0 +1,37 @@
+= Commit Management for GitHub Pages
+
+When GitHub Pages is served from a dedicated branch (e.g. `gh-pages`), we are free to rewrite its history to manage repository size.
+One way to do this is to simply amend the HEAD commit and force push.
+
+[source,sh]
+----
+git commit --amend --message "update GitHub Pages"
+git push --force origin gh-pages
+----
+
+The upside to this is that we don't have previous updates no longer contribute to the repository size.
+The downside to this is that we can't easily undo a bad commit.
+
+To have the best of both worlds, we can take a more sophisticated approach.
+Instead of squashing all of our changes into a single commit, we can preserve the N most recent commits and only squash the remaining commits.
+
+The `git-squash-oldest` script provided here does exactly this.
+
+== Algorithm
+
+First we split the history into two ranges:
+
+* The oldest commits to be squashed: [root, mid]
+* The newest commits to be preserved: (mid, head]
+
+Then we obtain the IDs for these three commits:
+
+* root - `git rev-list --max-parents=0 HEAD`
+* mid - `git rev-parse HEAD~$N` where `N` is the number of commits we want to preserve
+* head - `git rev-parse HEAD`
+
+Then we squash the first range by checking out the root commit, performing a squash merge of all of the commits under mid, then amend the root commit with the result of the merge.
+
+Then we cherry pick the second range on to our squashed commit.
+
+Finally we move the branch to the HEAD commit.
