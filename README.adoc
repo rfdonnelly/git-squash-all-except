@@ -1,4 +1,5 @@
 = Commit Management for GitHub Pages
+:imagesdir: images
 
 When GitHub Pages is served from a dedicated branch (e.g. `gh-pages`), we are free to rewrite its history to manage repository size.
 One way to do this is to simply amend the HEAD commit and force push.
@@ -16,6 +17,8 @@ To have the best of both worlds, we can take a more sophisticated approach.
 Instead of squashing all of our changes into a single commit, we can preserve the N most recent commits and only squash the remaining commits.
 
 The `git-squash-oldest` script provided here does exactly this.
+
+image::squash-oldest.drawio.svg[]
 
 == Algorithm
 
