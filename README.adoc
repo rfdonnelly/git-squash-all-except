@@ -14,7 +14,7 @@ The upside to this is that previous updates no longer contribute to the reposito
 The downside to this is that we can't easily undo a bad commit.
 
 To have the best of both worlds, we can take a more sophisticated approach.
-Instead of squashing all of our changes into a single commit, we can preserve the N most recent commits and only squash the remaining commits.
+Instead of squashing all of our changes into a single commit, we can preserve the N most recent commits and only squash the oldest commits.
 
 The `git-squash-all-except` script provided here does exactly this.
 
