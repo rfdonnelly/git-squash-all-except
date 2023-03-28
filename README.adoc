@@ -22,19 +22,19 @@ image::squash-oldest.drawio.svg[]
 
 == Algorithm
 
-First we split the history into two ranges:
+The history can be divided into two commit ranges:
 
 * The oldest commits to be squashed: [root, mid]
 * The newest commits to be preserved: (mid, head]
 
-Then we obtain the IDs for these three commits:
+The commit IDs for the root, mid, and head commits are determined as follows:
 
 * root - `git rev-list --max-parents=0 HEAD`
 * mid - `git rev-parse HEAD~$N` where `N` is the number of commits we want to preserve
 * head - `git rev-parse HEAD`
 
-Then we squash the first range by checking out the root commit, performing a squash merge of all of the commits under mid, then amend the root commit with the result of the merge.
+First, the oldest commits are squashed by checking out the root commit, performing a squash merge of mid, then amending the root commit with the result of the merge.
 
-Then we cherry pick the second range on to our squashed commit.
+Then we cherry pick the newest commits on to our squashed commit.
 
 Finally we move the branch to the HEAD commit.
