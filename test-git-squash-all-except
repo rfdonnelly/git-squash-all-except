@@ -39,13 +39,13 @@ make_test_repo
 git -C repo log --oneline
 add_test_commits 0 3
 git -C repo log --oneline
-(cd repo && ../git-squash-oldest 3)
+(cd repo && ../git-squash-all-except 3)
 git -C repo log --oneline
 add_test_commits 4 4
 git -C repo log --oneline
-(cd repo && ../git-squash-oldest 3)
+(cd repo && ../git-squash-all-except 3)
 git -C repo log --oneline
 add_test_commits 5 5
 git -C repo log --oneline
-(cd repo && ../git-squash-oldest 3)
+(cd repo && ../git-squash-all-except 3)
 git -C repo log --oneline
