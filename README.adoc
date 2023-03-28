@@ -18,7 +18,7 @@ Instead of squashing all of our changes into a single commit, we can preserve th
 
 The `git-squash-all-except` script provided here does exactly this.
 
-image::squash-oldest.drawio.svg[]
+image::squash-all-except.drawio.svg[]
 
 == Algorithm
 
