@@ -1,7 +1,7 @@
 = Commit Management for GitHub Pages
 :imagesdir: images
 
-When GitHub Pages is served from a dedicated branch (e.g. `gh-pages`), we are free to rewrite its history to manage repository size.
+When GitHub Pages is served from a dedicated branch (e.g. `gh-pages`), its history can be rewritten to manage repository size.
 One way to do this is to simply amend the HEAD commit and force push.
 
 [source,sh]
@@ -11,10 +11,10 @@ git push --force origin gh-pages
 ----
 
 The upside to this is that previous updates no longer contribute to the repository size.
-The downside to this is that we can't easily undo a bad commit.
+The downside to this is that a bad commit can't be easily undone.
 
-To have the best of both worlds, we can take a more sophisticated approach.
-Instead of squashing all of our changes into a single commit, we can preserve the N most recent commits and only squash the oldest commits.
+To have the best of both worlds, a more sophisticated approach can be used.
+Instead of squashing every change into a single commit, the N most recent commits can be preserved and only the oldest commits are squashed.
 
 The `git-squash-all-except` script provided here does exactly this.
 
