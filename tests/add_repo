@@ -1,0 +1,12 @@
+#!/bin/sh
+
+git init --quiet
+
+git config user.name name
+git config user.email email
+
+touch .gitignore
+git add .gitignore
+git commit --quiet --message initial
+
+git branch -M gh-pages

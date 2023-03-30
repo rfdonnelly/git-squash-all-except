@@ -1,0 +1,12 @@
+#!/bin/sh
+
+start=$1
+finish=$2
+N=$(echo $2 - $1 + 1 | bc -l)
+for i in $(seq $start $finish); do
+    filename=$i
+    touch $filename
+    git add $filename
+    git commit --quiet --message $filename
+done
+

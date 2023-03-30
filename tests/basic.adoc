@@ -1,0 +1,56 @@
+= Basic Test
+
+[listing]
+----
+$ add_repo
+$ add_commits 0 4
+$ git-squash-all-except 3 >/dev/null
+$ git log --format=%s
+| 4
+| 3
+| 2
+| squashed
+$ ls
+| 0
+| 1
+| 2
+| 3
+| 4
+----
+
+Idempotent
+
+[listing]
+----
+$ git-squash-all-except 3 >/dev/null
+$ git log --format=%s
+| 4
+| 3
+| 2
+| squashed
+$ ls
+| 0
+| 1
+| 2
+| 3
+| 4
+----
+
+[listing]
+----
+$ add_commits 5 6
+$ git-squash-all-except 3 >/dev/null
+$ git log --format=%s
+| 6
+| 5
+| 4
+| squashed
+$ ls
+| 0
+| 1
+| 2
+| 3
+| 4
+| 5
+| 6
+----

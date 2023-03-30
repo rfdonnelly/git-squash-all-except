@@ -64,3 +64,19 @@ The algorithm is then:
 .. Checkout the branch
 +
  git checkout $branch
+
+== Development
+
+Fetch test dependencies.
+
+[source,sh]
+----
+git submodule update --init
+----
+
+Run the tests.
+
+[source,sh]
+----
+./test
+----

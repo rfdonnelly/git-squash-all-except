@@ -1,0 +1,7 @@
+#!/bin/sh
+
+root=$(git rev-parse --show-toplevel)
+export PATH="$root/bin:$root/vendor/tush/bin:$root/tests:$PATH"
+for test in tests/*.adoc; do
+    tush-check $test
+done

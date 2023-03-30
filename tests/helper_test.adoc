@@ -1,0 +1,32 @@
+= Helpers
+
+[listing]
+----
+$ add_repo
+$ git log --format=%s
+| initial
+----
+
+[listing]
+----
+$ add_commits 0 3
+$ git log --format=%s
+| 3
+| 2
+| 1
+| 0
+| initial
+----
+
+[listing]
+----
+$ add_commits 4 5
+$ git log --format=%s
+| 5
+| 4
+| 3
+| 2
+| 1
+| 0
+| initial
+----

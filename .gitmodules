@@ -1,0 +1,3 @@
+[submodule "vendor/tush"]
+	path = vendor/tush
+	url = https://github.com/adolfopa/tush.git
