@@ -24,17 +24,38 @@ image::squash-all-except.drawio.svg[]
 
 The history can be divided into two commit ranges:
 
-* The oldest commits to be squashed: [root, mid]
-* The newest commits to be preserved: (mid, head]
+* The oldest commits to be squashed: [`root`, `mid`]
+* The newest commits to be preserved: (`mid`, `head`]
 
 The commit IDs for the root, mid, and head commits are determined as follows:
 
-* root - `git rev-list --max-parents=0 HEAD`
-* mid - `git rev-parse HEAD~$N` where `N` is the number of commits we want to preserve
-* head - `git rev-parse HEAD`
+* `root` - `git rev-list --max-parents=0 HEAD`
+* `mid` - `git rev-parse HEAD~$N` where `N` is the number of commits we want to preserve
+* `head` - `git rev-parse HEAD`
 
-First, the oldest commits are squashed by checking out the root commit, performing a squash merge of mid, then amending the root commit with the result of the merge.
+The current branch also needs to be recorded:
 
-Then we cherry pick the newest commits on to our squashed commit.
+* `branch` - `git branch --show-current`
 
-Finally we move the branch to the HEAD commit.
+The algorithm is then:
+
+. Squash the oldest commits
+.. Checkout `root`
++
+ git checkout $root
+ 
+.. Squash merge from `mid`
++
+ git merge --squash $mid
+ 
+.. Amend `root` with the merge result
++
+ git commit --amend -m squashed
+ 
+. Preserve the newest `N` commits
++
+ git cherry-pick $mid..$head
+ 
+. Move the branch to the new `HEAD`
++
+ git branch --force $branch HEAD
