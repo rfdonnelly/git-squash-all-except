@@ -43,19 +43,24 @@ The algorithm is then:
 .. Checkout `root`
 +
  git checkout $root
- 
+
 .. Squash merge from `mid`
 +
  git merge --squash $mid
- 
+
 .. Amend `root` with the merge result
 +
  git commit --amend -m squashed
- 
+
 . Preserve the newest `N` commits
 +
  git cherry-pick $mid..$head
- 
+
 . Move the branch to the new `HEAD`
+.. Move the branch
 +
  git branch --force $branch HEAD
+
+.. Checkout the branch
++
+ git checkout $branch

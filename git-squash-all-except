@@ -25,13 +25,12 @@ else
     # Squash oldest commits
     git checkout --quiet $root
     git merge --quiet --squash $mid >/dev/null
-    git commit --quiet --amend --no-edit -m squashed >/dev/null
+    git commit --quiet --amend -m squashed >/dev/null
 
     # Preserve newest commits
     git cherry-pick --quiet $mid..$head >/dev/null
 
     # Move branch to new head
-    new_head=$(git rev-parse HEAD)
-    git checkout --quiet $branch >/dev/null
-    git reset --hard $new_head >/dev/null
+    git branch --force $branch HEAD
+    git checkout --quiet $branch
 fi
