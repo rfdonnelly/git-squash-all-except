@@ -25,7 +25,7 @@ else
     # Squash oldest commits
     git checkout --quiet $root
     git merge --quiet --squash $mid >/dev/null
-    git commit --quiet --amend -m squashed >/dev/null
+    git commit --quiet --amend --allow-empty --reset-author -m squashed >/dev/null
 
     # Preserve newest commits
     git cherry-pick --quiet $mid..$head >/dev/null
