@@ -9,4 +9,3 @@ for i in $(seq $start $finish); do
     git add $filename
     git commit --quiet --message $filename
 done
-

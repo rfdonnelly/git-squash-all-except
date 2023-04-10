@@ -1,0 +1,19 @@
+#!/bin/sh
+
+export TUSH_SANDBOX=$(mktemp -d -t test-XXXXXX)
+
+if ! test -d $TUSH_SANDBOX; then
+    echo "Could not create test sandbox directory"
+    exit 1
+fi
+
+cleanup() {
+    rm -rf $TUSH_SANDBOX
+}
+
+trap cleanup EXIT
+
+export GIT_CONFIG_GLOBAL=/dev/null
+# (cd $TUSH_SANDBOX && create_sbox)
+
+tush-check -x "$@"
