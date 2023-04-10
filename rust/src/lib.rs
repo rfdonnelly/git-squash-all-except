@@ -1,11 +1,7 @@
 use std::path::Path;
 
-use git2::{
-    AnnotatedCommit,
-    Repository,
-    ResetType,
-};
 use anyhow::anyhow;
+use git2::{AnnotatedCommit, Repository, ResetType};
 
 pub fn git_reduce<P: AsRef<Path>>(path: P, num_keep: usize) -> anyhow::Result<()> {
     git_reduce_path(path.as_ref(), num_keep)
@@ -38,11 +34,7 @@ fn git_reduce_path(path: &Path, num_keep: usize) -> anyhow::Result<()> {
         // repo.checkout_head(None)?;
         let root_commit = repo.find_commit(root_oid)?;
         let target = root_commit.as_object();
-        repo.reset(
-            target,
-            ResetType::Hard,
-            None,
-        )?;
+        repo.reset(target, ResetType::Hard, None)?;
 
         // Merge
         let merge_opts = None;
@@ -52,11 +44,7 @@ fn git_reduce_path(path: &Path, num_keep: usize) -> anyhow::Result<()> {
             .map(|oid| repo.find_annotated_commit(oid))
             .collect::<Result<Vec<_>, _>>()?;
         let annotated_commit_refs: Vec<&AnnotatedCommit> = annotated_commits.iter().collect();
-        repo.merge(
-            annotated_commit_refs.as_slice(),
-            merge_opts,
-            checkout_opts,
-        )?;
+        repo.merge(annotated_commit_refs.as_slice(), merge_opts, checkout_opts)?;
 
         // Amend root commit w/ merge result
         let mut index = repo.index()?;
@@ -98,14 +86,8 @@ fn git_reduce_path(path: &Path, num_keep: usize) -> anyhow::Result<()> {
             let committer = commit.committer();
             let message = commit.message().unwrap_or("");
             let parent = repo.head()?.peel_to_commit()?;
-            let _commit_oid = repo.commit(
-                update_ref,
-                &author,
-                &committer,
-                message,
-                &tree,
-                &[&parent],
-            )?;
+            let _commit_oid =
+                repo.commit(update_ref, &author, &committer, message, &tree, &[&parent])?;
         }
         repo.cleanup_state()?;
     }
