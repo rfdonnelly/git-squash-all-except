@@ -1,36 +1,46 @@
 #!/bin/sh
 
-# The number of most recent commits to preserve
-N=$1
+set -e
+
+parse_commitish() {
+    case "$1" in
+        ROOT)
+            # NOTE: This could return more than one commit (e.g. if there is an octopus
+            # merge).  Would be good to assert that this returns one commit.
+            git rev-list --max-parents=0 HEAD
+            ;;
+        *)
+            git rev-parse "$1"
+            ;;
+    esac
+}
+
+if test "$#" -ne 2; then
+    "Usage: git-squash-range <commit> <commit>"
+fi
+
+left=$(parse_commitish $1)
+right=$(parse_commitish $2)
 
 head=$(git rev-parse HEAD)
-total_count=$(git rev-list --count $head)
-if test $N -ge $total_count; then
-    echo "Preserving all commits since preserve count ($N) >= total count ($total_count)"
-else
-    # NOTE: This could return more than one commit (e.g. if there is an octopus
-    # merge).  Would be good to assert that this returns one commit.
-    root=$(git rev-list --max-parents=0 HEAD)
-    mid=$(git rev-parse HEAD~$N)
-    branch=$(git branch --show-current)
+branch=$(git branch --show-current)
 
-    short_root=$(git rev-parse --short $root)
-    short_mid=$(git rev-parse --short $mid)
-    short_head=$(git rev-parse --short $head)
-    left_count=$(git rev-list --count $mid)
-    right_count=$(git rev-list --count $mid..$head)
-    echo "Squashing the $left_count oldest commits [$short_root,$short_mid] into a single commit"
-    echo "Preserving the $right_count newest commits commits ($short_mid,$short_head]"
+short_left=$(git rev-parse --short $left)
+short_right=$(git rev-parse --short $right)
+short_head=$(git rev-parse --short $head)
+left_count=$(git rev-list --count $right)
+right_count=$(git rev-list --count $right..$head)
+echo "Squashing the $left_count oldest commits [$short_left,$short_right] into a single commit"
+echo "Preserving the $right_count newest commits commits ($short_right,$short_head]"
 
-    # Squash oldest commits
-    git checkout --quiet $root
-    git merge --quiet --squash $mid >/dev/null
-    git commit --quiet --amend --allow-empty --reset-author -m squashed >/dev/null
+# Squash oldest commits
+git checkout --quiet $left
+git merge --quiet --squash $right >/dev/null
+git commit --quiet --amend --allow-empty --reset-author -m Squashed >/dev/null
 
-    # Preserve newest commits
-    git cherry-pick --quiet $mid..$head >/dev/null
+# Preserve newest commits
+git cherry-pick --quiet $right..$head >/dev/null
 
-    # Move branch to new head
-    git branch --force $branch HEAD
-    git checkout --quiet $branch
-fi
+# Move branch to new head
+git branch --force $branch HEAD
+git checkout --quiet $branch

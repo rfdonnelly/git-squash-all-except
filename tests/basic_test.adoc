@@ -4,12 +4,12 @@
 ----
 $ add_repo
 $ add_commits 0 4
-$ git-squash-range 3 >/dev/null
+$ git-squash-range ROOT HEAD~3 >/dev/null
 $ git log --format=%s
 | 4
 | 3
 | 2
-| squashed
+| Squashed
 $ ls
 | 0
 | 1
@@ -22,12 +22,12 @@ Idempotent
 
 [listing]
 ----
-$ git-squash-range 3 >/dev/null
+$ git-squash-range ROOT HEAD~3 >/dev/null
 $ git log --format=%s
 | 4
 | 3
 | 2
-| squashed
+| Squashed
 $ ls
 | 0
 | 1
@@ -39,12 +39,12 @@ $ ls
 [listing]
 ----
 $ add_commits 5 6
-$ git-squash-range 3 >/dev/null
+$ git-squash-range ROOT HEAD~3 >/dev/null
 $ git log --format=%s
 | 6
 | 5
 | 4
-| squashed
+| Squashed
 $ ls
 | 0
 | 1
