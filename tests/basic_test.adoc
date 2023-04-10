@@ -4,7 +4,7 @@
 ----
 $ add_repo
 $ add_commits 0 4
-$ git-squash-all-except 3 >/dev/null
+$ git-squash-range 3 >/dev/null
 $ git log --format=%s
 | 4
 | 3
@@ -22,7 +22,7 @@ Idempotent
 
 [listing]
 ----
-$ git-squash-all-except 3 >/dev/null
+$ git-squash-range 3 >/dev/null
 $ git log --format=%s
 | 4
 | 3
@@ -39,7 +39,7 @@ $ ls
 [listing]
 ----
 $ add_commits 5 6
-$ git-squash-all-except 3 >/dev/null
+$ git-squash-range 3 >/dev/null
 $ git log --format=%s
 | 6
 | 5

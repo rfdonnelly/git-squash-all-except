@@ -16,9 +16,9 @@ The downside is that a bad commit can't be easily undone.
 To have the best of both worlds, a more sophisticated approach can be used.
 Instead of squashing every change into a single commit, preserve the N most recent commits and only the remaining commits.
 
-The `git-squash-all-except` script provided here does exactly this.
+The `git-squash-range` script provided here does exactly this.
 
-image::squash-all-except.drawio.svg[]
+image::squash-range.drawio.svg[]
 
 == Algorithm
 
