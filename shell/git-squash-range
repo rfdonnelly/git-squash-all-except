@@ -1,6 +1,12 @@
 #!/bin/sh
 
-set -e
+set -eu
+
+die() {
+    exit "$1"
+}
+
+trap 'die $?' EXIT
 
 parse_commitish() {
     case "$1" in
@@ -10,17 +16,28 @@ parse_commitish() {
             git rev-list --max-parents=0 HEAD
             ;;
         *)
+            if ! git rev-parse "$1" >/dev/null 2>&1; then
+                echo "can't find revision '$1'" 1>&2
+                exit 1
+            fi
             git rev-parse "$1"
             ;;
     esac
 }
 
 if test "$#" -ne 2; then
-    "Usage: git-squash-range <commit> <commit>"
+    echo "Usage: git-squash-range <commit> <commit>" 1>&2
+    exit 1
 fi
 
 left=$(parse_commitish $1)
 right=$(parse_commitish $2)
+
+commits_between=$(git rev-list --count $left..$right)
+if test "$commits_between" -eq 0; then
+    echo "nothing to squash" 1>&2
+    exit 1
+fi
 
 head=$(git rev-parse HEAD)
 branch=$(git branch --show-current)

@@ -23,6 +23,8 @@ Idempotent
 [listing]
 ----
 $ git-squash-range ROOT HEAD~3 >/dev/null
+@ nothing to squash
+? 1
 $ git log --format=%s
 | 4
 | 3

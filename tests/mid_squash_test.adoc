@@ -1,0 +1,34 @@
+= Mid Squash Test
+
+Start with 9 commits.
+
+[listing]
+----
+$ add_repo
+$ add_commits 1 8
+$ git log --format=%s
+| 8
+| 7
+| 6
+| 5
+| 4
+| 3
+| 2
+| 1
+| Initial
+----
+
+Squash the 3 in the middle.
+
+[listing]
+----
+$ git-squash-range HEAD~5 HEAD~3 >/dev/null
+$ git log --format=%s
+| 8
+| 7
+| 6
+| Squashed
+| 2
+| 1
+| Initial
+----

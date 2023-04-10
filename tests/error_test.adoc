@@ -1,0 +1,25 @@
+= Error Test
+
+[listing]
+----
+$ add_repo
+$ add_commits 1 8
+----
+
+ROOT for second commit.
+
+[listing]
+----
+$ git-squash-range HEAD ROOT >/dev/null
+@ nothing to squash
+? 1
+----
+
+Bad commitish.
+
+[listing]
+----
+$ git-squash-range ROOT HEAD~10 2>&1
+| can't find revision 'HEAD~10'
+? 1
+----

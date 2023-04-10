@@ -4,7 +4,7 @@
 ----
 $ add_repo
 $ git log --format=%s
-| initial
+| Initial
 ----
 
 [listing]
@@ -15,7 +15,7 @@ $ git log --format=%s
 | 2
 | 1
 | 0
-| initial
+| Initial
 ----
 
 [listing]
@@ -28,5 +28,5 @@ $ git log --format=%s
 | 2
 | 1
 | 0
-| initial
+| Initial
 ----
