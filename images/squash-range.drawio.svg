@@ -180,7 +180,8 @@
                             <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; overflow-wrap: normal;">
                                 Before
                                 <br/>
-                                git-squash-range 3
+                                git-squash-range ROOT HEAD~3
+
                             </div>
                         </div>
                     </div>
@@ -199,7 +200,7 @@
                             <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; overflow-wrap: normal;">
                                 After
                                 <br/>
-                                git-squash-range 3
+                                git-squash-range ROOT HEAD~3
                             </div>
                         </div>
                     </div>
