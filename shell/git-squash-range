@@ -25,13 +25,17 @@ parse_commitish() {
     esac
 }
 
-if test "$#" -ne 2; then
-    echo "Usage: git-squash-range <commit> <commit>" 1>&2
+if test "$#" -eq 0 || test "$#" -gt 2 ; then
+    echo "Usage: git-squash-range [<commit>] <commit>" 1>&2
     exit 1
 fi
 
-left=$(parse_commitish $1)
-right=$(parse_commitish $2)
+left=$(parse_commitish "ROOT")
+if test "$#" -eq 2; then
+    left=$(parse_commitish $1)
+    shift
+fi
+right=$(parse_commitish $1)
 
 commits_between=$(git rev-list --count $left..$right)
 if test "$commits_between" -eq 0; then

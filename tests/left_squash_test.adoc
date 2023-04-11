@@ -18,11 +18,11 @@ $ git log --format=%s
 | Initial
 ----
 
-Squash the 3 in the middle.
+Squash all but 3
 
 [listing]
 ----
-$ git-squash-range HEAD~5 HEAD~3 >/dev/null
+$ git-squash-range HEAD~3 >/dev/null
 ----
 
 Check commits.
@@ -34,9 +34,6 @@ $ git log --format=%s
 | 7
 | 6
 | Squashed
-| 2
-| 1
-| Initial
 ----
 
 [listing]
