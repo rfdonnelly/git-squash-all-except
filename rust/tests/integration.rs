@@ -1,4 +1,6 @@
+use anyhow::anyhow;
 use git2::{Commit, Repository};
+use git_squash_range::git_squash_range;
 use std::env;
 use std::fs::File;
 use std::io::Write;
@@ -24,7 +26,16 @@ fn integration() -> TestResult {
     duct::cmd!("git", "log", "--format=%an,%ae,%s%d").run()?;
     duct::cmd!("git", "status").run()?;
 
-    git_reduce::git_reduce(".", 3)?;
+    let root_oid = {
+        let mut revwalk = repo.revwalk()?;
+        revwalk.simplify_first_parent()?;
+        revwalk.push_head()?;
+        revwalk.last().ok_or(anyhow!("no commits"))??
+    };
+    let num_keep = 3;
+    let end_oid = repo.revparse_single(&format!("HEAD~{num_keep}"))?.id();
+
+    git_squash_range(&repo, root_oid, end_oid)?;
 
     duct::cmd!("git", "log", "--format=%an,%ae,%s%d").run()?;
     duct::cmd!("git", "status").run()?;
