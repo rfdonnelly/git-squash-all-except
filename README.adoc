@@ -67,16 +67,9 @@ The algorithm is then:
 
 == Development
 
-Fetch test dependencies.
-
-[source,sh]
-----
-git submodule update --init
-----
-
 Run the tests.
 
 [source,sh]
 ----
-./test
+rake
 ----
