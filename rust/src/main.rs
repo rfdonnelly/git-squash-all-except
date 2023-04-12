@@ -15,12 +15,11 @@ fn main() -> anyhow::Result<()> {
         return Err(anyhow!("usage: git-squash-range [<commit>] <commit>"));
     }
 
-    let start =
-        if args.len() == 1 {
-            "ROOT"
-        } else {
-            args.first().unwrap()
-        };
+    let start = if args.len() == 1 {
+        "ROOT"
+    } else {
+        args.first().unwrap()
+    };
 
     let end = args.last().unwrap();
 

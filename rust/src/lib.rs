@@ -1,4 +1,3 @@
-
 #[cfg(feature = "git2")]
 mod git2_impl;
 #[cfg(feature = "git2")]

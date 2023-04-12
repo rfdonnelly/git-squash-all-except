@@ -88,17 +88,16 @@ pub fn git_squash_range(start: &str, end: &str) -> anyhow::Result<()> {
 }
 
 fn rev_parse(repo: &Repository, commitish: &str) -> anyhow::Result<git2::Oid> {
-    let oid =
-        if commitish == "ROOT" {
-            let mut revwalk = repo.revwalk()?;
-            revwalk.simplify_first_parent()?;
-            revwalk.push_head()?;
-            revwalk.last().ok_or(anyhow!("no commits"))??
-        } else {
-            repo.revparse_single(commitish)
-                .map_err(|_| anyhow!("can't find revision '{commitish}'"))?
-                .id()
-        };
+    let oid = if commitish == "ROOT" {
+        let mut revwalk = repo.revwalk()?;
+        revwalk.simplify_first_parent()?;
+        revwalk.push_head()?;
+        revwalk.last().ok_or(anyhow!("no commits"))??
+    } else {
+        repo.revparse_single(commitish)
+            .map_err(|_| anyhow!("can't find revision '{commitish}'"))?
+            .id()
+    };
 
     Ok(oid)
 }
