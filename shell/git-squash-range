@@ -17,7 +17,7 @@ parse_commitish() {
             ;;
         *)
             if ! git rev-parse "$1" >/dev/null 2>&1; then
-                echo "can't find revision '$1'" 1>&2
+                echo "Error: can't find revision '$1'" 1>&2
                 exit 1
             fi
             git rev-parse "$1"
@@ -39,7 +39,7 @@ right=$(parse_commitish $1)
 
 commits_between=$(git rev-list --count $left..$right)
 if test "$commits_between" -eq 0; then
-    echo "nothing to squash" 1>&2
+    echo "Error: nothing to squash" 1>&2
     exit 1
 fi
 

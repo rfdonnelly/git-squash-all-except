@@ -1,19 +1,11 @@
 use anyhow::anyhow;
-use git2::{AnnotatedCommit, Oid, Repository, ResetType};
+use git2::{AnnotatedCommit, Repository, ResetType};
 
 pub fn git_squash_range(start: &str, end: &str) -> anyhow::Result<()> {
-    let repo = Repository.discover(".")?;
+    let repo = Repository::discover(".")?;
 
-    let start_oid =
-        if start == "ROOT" {
-            let mut revwalk = repo.revwalk()?;
-            revwalk.simplify_first_parent()?;
-            revwalk.push_head()?;
-            revwalk.last().ok_or(anyhow!("no commits"))??
-        } else {
-            repo.revparse_single(start)?.id()
-        };
-    let end_oid = repo.revparse_single(end)?.id();
+    let start_oid = rev_parse(&repo, start)?;
+    let end_oid = rev_parse(&repo, end)?;
 
     let commits_to_squash = {
         let mut walk = repo.revwalk()?;
@@ -23,7 +15,7 @@ pub fn git_squash_range(start: &str, end: &str) -> anyhow::Result<()> {
         walk.count()
     };
 
-    eprintln!("{start_oid} {end_oid} {commits_to_squash}");
+    // eprintln!("{start_oid} {end_oid} {commits_to_squash}");
 
     if commits_to_squash == 0 {
         return Err(anyhow!("nothing to squash"));
@@ -95,3 +87,18 @@ pub fn git_squash_range(start: &str, end: &str) -> anyhow::Result<()> {
     Ok(())
 }
 
+fn rev_parse(repo: &Repository, commitish: &str) -> anyhow::Result<git2::Oid> {
+    let oid =
+        if commitish == "ROOT" {
+            let mut revwalk = repo.revwalk()?;
+            revwalk.simplify_first_parent()?;
+            revwalk.push_head()?;
+            revwalk.last().ok_or(anyhow!("no commits"))??
+        } else {
+            repo.revparse_single(commitish)
+                .map_err(|_| anyhow!("can't find revision '{commitish}'"))?
+                .id()
+        };
+
+    Ok(oid)
+}
