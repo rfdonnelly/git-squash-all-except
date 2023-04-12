@@ -6,11 +6,13 @@ directory 'tush' do
 end
 
 TUSH_PATH = File.join(__dir__, %w[tush bin])
-BIN_PATH = File.join(__dir__, 'shell')
+SHELL_PATH = File.join(__dir__, 'shell')
+RUST_PATH = File.join(__dir__, %w[rust target debug])
 TEST_PATH = File.join(__dir__, %w[tests])
 ENV['PATH'] = [
   TUSH_PATH,
-  BIN_PATH,
+  RUST_PATH,
+  SHELL_PATH,
   TEST_PATH,
   ENV['PATH'],
 ].join(':')
