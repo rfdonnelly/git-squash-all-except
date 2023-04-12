@@ -1,9 +1,19 @@
 use anyhow::anyhow;
 use git2::{AnnotatedCommit, Oid, Repository, ResetType};
 
-pub fn git_squash_range(repo: &Repository, start: Oid, end: Oid) -> anyhow::Result<()> {
-    let start_oid = start;
-    let end_oid = end;
+pub fn git_squash_range(start: &str, end: &str) -> anyhow::Result<()> {
+    let repo = Repository.discover(".")?;
+
+    let start_oid =
+        if start == "ROOT" {
+            let mut revwalk = repo.revwalk()?;
+            revwalk.simplify_first_parent()?;
+            revwalk.push_head()?;
+            revwalk.last().ok_or(anyhow!("no commits"))??
+        } else {
+            repo.revparse_single(start)?.id()
+        };
+    let end_oid = repo.revparse_single(end)?.id();
 
     let commits_to_squash = {
         let mut walk = repo.revwalk()?;
@@ -12,6 +22,8 @@ pub fn git_squash_range(repo: &Repository, start: Oid, end: Oid) -> anyhow::Resu
         walk.hide(start_oid)?;
         walk.count()
     };
+
+    eprintln!("{start_oid} {end_oid} {commits_to_squash}");
 
     if commits_to_squash == 0 {
         return Err(anyhow!("nothing to squash"));
